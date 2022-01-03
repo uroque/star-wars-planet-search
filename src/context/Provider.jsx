@@ -5,6 +5,7 @@ import DataContext from './DataContext';
 const Provider = ({ children }) => {
   // define useState para os dados
   const [data, setData] = useState([]);
+  const [nameFilter, setNameFilter] = useState('');
 
   // faz fetch dos dados
   const fetchData = async () => {
@@ -23,7 +24,7 @@ const Provider = ({ children }) => {
   }, []);
 
   return (
-    <DataContext.Provider value={ { data, setData } }>
+    <DataContext.Provider value={ { data, setData, nameFilter, setNameFilter } }>
       {children}
     </DataContext.Provider>
   );
