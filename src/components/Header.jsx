@@ -11,6 +11,7 @@ function Header() {
     filterByNumericValues,
     // setFilterByNumericValues,
     columns,
+    setColumns,
     comparisons,
     filterList,
     setFilterList,
@@ -47,7 +48,7 @@ function Header() {
       }
       return Number(planet[columnFilter]) === Number(numericalFilter);
     }));
-    setColumnFilter(columns.filter((column) => column !== columnFilter));
+    setColumns(columns.filter((column) => column !== columnFilter));
 
     const newFilter = { columnFilter, comparisonFilter, numericalFilter };
     setFilterList([...filterList, newFilter]);
