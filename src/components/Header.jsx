@@ -70,7 +70,7 @@ function Header() {
           id="column-filter"
           data-testid="column-filter"
           onChange={ (e) => setColumnFilter(e.target.value) }
-          value={ filterByNumericValues.column }
+          value={ columnFilter }
         >
           {
             columns.map((column) => (
@@ -83,7 +83,7 @@ function Header() {
           id="comparison-filter"
           data-testid="comparison-filter"
           onChange={ (e) => setComparisonFilter(e.target.value) }
-          value={ filterByNumericValues.comparison }
+          value={ comparisonFilter }
         >
           {
             comparisons.map((comparison) => (
@@ -96,7 +96,7 @@ function Header() {
           type="number"
           data-testid="value-filter"
           onChange={ (e) => setNumericalFilter(e.target.value) }
-          value={ numericalFilter }
+          value={ numericalFilter.value }
         />
         <button
           type="button"
