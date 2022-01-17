@@ -1,10 +1,15 @@
-// faz fetch dos dados
+// import { useContext } from 'react';
+// import DataContext from '../context/DataContext';
+
+// fetches data
 const fetchData = async () => {
+  // const { setData } = useContext(DataContext);
   const response = await fetch('https://swapi-trybe.herokuapp.com/api/planets/');
   const { results } = await response.json();
 
-  // remove a coluna 'residents' do array 'results'
+  // removes the column 'residents' from 'results'
   results.forEach((result) => delete result.residents);
+  setData(results);
   return results;
 };
 
