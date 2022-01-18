@@ -98,7 +98,7 @@ function Header() {
           type="number"
           data-testid="value-filter"
           onChange={ (e) => setNumericalFilter(e.target.value) }
-          value={ numericalFilter.value }
+          value={ numericalFilter }
         />
         <button
           type="button"
