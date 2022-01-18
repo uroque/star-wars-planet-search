@@ -2,6 +2,11 @@ import React, { useContext, useEffect } from 'react';
 import DataContext from '../context/DataContext';
 
 function Header() {
+  const TABLE_HEADER = ['Name', 'Rotation Period', 'Orbital Period', 'Diameter',
+    'Climate',
+    'Gravity', 'Terrain', 'Surface Water', 'Population', 'Films', 'Created', 'Edited',
+    'Url'];
+
   // defines the context that will be used
   const {
     data,
@@ -19,6 +24,12 @@ function Header() {
     numericalFilter,
     setNumericalFilter,
     unfilteredData,
+    columnSort,
+    setColumnSort,
+    sort,
+    setSort,
+    change,
+    setChange,
   } = useContext(DataContext);
 
   // defines the function that will handle the text input filter
@@ -45,7 +56,7 @@ function Header() {
         return Number(planet[filter.columnFilter]) === Number(filter.numericalFilter);
       }));
     });
-  }, [filterList]);
+  }, [data, filterList, setData, unfilteredData]);
 
   function handleButtonSubmit() {
     setColumns(columns.filter((column) => column !== columnFilter));
@@ -56,6 +67,41 @@ function Header() {
   function handleDeleteFilter(parameter) {
     setFilterList(filterList.filter((filter) => filter.columnFilter !== parameter));
   }
+
+  function handleSort() {
+    function maior(a, b) {
+      if (sort === 'ASC') {
+        return a[columnSort] > b[columnSort];
+      }
+      if (sort === 'DESC') {
+        return a[columnSort] < b[columnSort];
+      }
+    }
+    if (columns.includes(columnSort)) {
+      let novoArray = [];
+      if (sort === 'DESC') {
+        novoArray = data.sort((a, b) => b[columnSort] - a[columnSort]);
+      } else {
+        novoArray = data.sort((a, b) => a[columnSort] - b[columnSort]);
+      }
+      setData(novoArray);
+    } else {
+      setData(data.sort((a, b) => {
+        if (maior(a, b)) {
+          return 1;
+        } if (maior(b, a)) {
+          return 1 - 2;
+        }
+        return 0;
+      }));
+    }
+    setChange(!change);
+  }
+
+  useEffect(() => {
+    handleSort();
+    console.log(data);
+  }, [data]);
 
   return (
     <header>
@@ -122,6 +168,50 @@ function Header() {
             </button>
           </p>
         ))}
+      </div>
+      <div>
+        <select
+          data-testid="column-sort"
+          onChange={ (e) => setColumnSort(e.target.value) }
+        >
+          {TABLE_HEADER.map((column) => (
+            <option
+              key={ column }
+              value={ column.toLowerCase().replace(' ', '_') }
+            >
+              {column}
+            </option>
+          ))}
+        </select>
+        <label htmlFor="ASC">
+          Ascendente
+          <input
+            type="radio"
+            data-testid="column-sort-input-asc"
+            name="sort"
+            id="ASC"
+            value="ASC"
+            onChange={ (e) => setSort(e.target.value) }
+          />
+        </label>
+        <label htmlFor="DESC">
+          Descendente
+          <input
+            type="radio"
+            data-testid="column-sort-input-desc"
+            name="sort"
+            id="DESC"
+            value="DESC"
+            onChange={ (e) => setSort(e.target.value) }
+          />
+        </label>
+        <button
+          type="button"
+          data-testid="column-sort-button"
+          onClick={ handleSort }
+        >
+          Sort
+        </button>
       </div>
     </header>
   );

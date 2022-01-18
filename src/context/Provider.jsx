@@ -45,6 +45,12 @@ const Provider = ({ children }) => {
 
   const [numericalFilter, setNumericalFilter] = useState(0);
 
+  const [columnSort, setColumnSort] = useState('name');
+
+  const [sort, setSort] = useState('ASC');
+
+  const [change, setChange] = useState(true);
+
   // fetches data
   const fetchData = async () => {
     const response = await fetch('https://swapi-trybe.herokuapp.com/api/planets/');
@@ -81,6 +87,12 @@ const Provider = ({ children }) => {
     numericalFilter,
     setNumericalFilter,
     unfilteredData,
+    columnSort,
+    setColumnSort,
+    sort,
+    setSort,
+    change,
+    setChange,
   };
 
   return (
