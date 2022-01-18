@@ -55,7 +55,6 @@ function Header() {
 
   function handleDeleteFilter(parameter) {
     setFilterList(filterList.filter((filter) => filter.columnFilter !== parameter));
-    console.log(filterList);
   }
 
   return (
