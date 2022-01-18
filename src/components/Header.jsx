@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import DataContext from '../context/DataContext';
 
 function Header() {
@@ -7,9 +7,6 @@ function Header() {
     data,
     setData,
     setNameFilter,
-    setHasNumericalFilter,
-    filterByNumericValues,
-    // setFilterByNumericValues,
     columns,
     setColumns,
     comparisons,
@@ -21,6 +18,7 @@ function Header() {
     setComparisonFilter,
     numericalFilter,
     setNumericalFilter,
+    unfilteredData,
   } = useContext(DataContext);
 
   // defines the function that will handle the text input filter
@@ -33,31 +31,35 @@ function Header() {
     });
   };
 
-  // defines the function that will apply the numerical value filter, activated when the form is submited
-  // function handleFormSubmit(event) {
-  //   event.preventDefault();
-  //   setHasNumericalFilter(true);
-  // }
-  function handleButtonSubmit() {
-    console.log('nada');
-    setData(data.filter((planet) => {
-      if (comparisonFilter === 'maior que') {
-        return Number(planet[columnFilter]) > numericalFilter;
-      } if (comparisonFilter === 'menor que') {
-        return Number(planet[columnFilter]) < numericalFilter;
-      }
-      return Number(planet[columnFilter]) === Number(numericalFilter);
-    }));
-    setColumns(columns.filter((column) => column !== columnFilter));
+  useEffect(() => {
+    if (filterList.length === 0) {
+      setData(unfilteredData);
+    }
+    filterList.forEach((filter) => {
+      setData(data.filter((planet) => {
+        if (filter.comparisonFilter === 'maior que') {
+          return Number(planet[filter.columnFilter]) > filter.numericalFilter;
+        } if (filter.comparisonFilter === 'menor que') {
+          return Number(planet[filter.columnFilter]) < filter.numericalFilter;
+        }
+        return Number(planet[filter.columnFilter]) === Number(filter.numericalFilter);
+      }));
+    });
+  }, [filterList]);
 
+  function handleButtonSubmit() {
+    setColumns(columns.filter((column) => column !== columnFilter));
     const newFilter = { columnFilter, comparisonFilter, numericalFilter };
     setFilterList([...filterList, newFilter]);
-    console.log(newFilter, 'newFilter');
+  }
+
+  function handleDeleteFilter(parameter) {
+    setFilterList(filterList.filter((filter) => filter.columnFilter !== parameter));
+    console.log(filterList);
   }
 
   return (
     <header>
-      { console.log(filterList, 'filterList') }
       <h1 id="app-title">Star Wars Planets Search</h1>
       <form>
         <input
@@ -108,7 +110,19 @@ function Header() {
         </button>
       </form>
       <div id="filter-list">
-        a
+        {filterList.map((filter, index) => (
+          <p key={ index } data-testid="filter">
+            {`${filter.columnFilter}
+              ${filter.comparisonFilter}
+              ${filter.numericalFilter}`}
+            <button
+              type="button"
+              onClick={ () => handleDeleteFilter(filter.columnFilter) }
+            >
+              X
+            </button>
+          </p>
+        ))}
       </div>
     </header>
   );

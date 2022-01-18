@@ -6,6 +6,8 @@ const Provider = ({ children }) => {
   // defines useState for the data
   const [data, setData] = useState([]);
 
+  const [unfilteredData, setUnfilteredData] = useState([]);
+
   // defines useState for the 'name' filter
   const [nameFilter, setNameFilter] = useState({
     filterByName: {
@@ -13,15 +15,11 @@ const Provider = ({ children }) => {
     },
   });
 
-  const [hasNumericalFilter, setHasNumericalFilter] = useState(false);
-
-  const [filterByNumericValues, setFilterByNumericValues] = useState(
-    {
-      column: 'population',
-      comparison: 'maior que',
-      value: 0,
-    },
-  );
+  const filterByNumericValues = {
+    column: 'population',
+    comparison: 'maior que',
+    value: 0,
+  };
 
   const [columns, setColumns] = useState([
     'population',
@@ -57,6 +55,7 @@ const Provider = ({ children }) => {
 
     // sets the value of 'data' to be equal to the 'results' array
     setData(results);
+    setUnfilteredData(results);
   };
 
   // uses useState method as componentDidMount(), passing the fetchData function
@@ -69,10 +68,6 @@ const Provider = ({ children }) => {
     setData,
     nameFilter,
     setNameFilter,
-    filterByNumericValues,
-    setFilterByNumericValues,
-    hasNumericalFilter,
-    setHasNumericalFilter,
     columns,
     setColumns,
     comparisons,
@@ -85,6 +80,7 @@ const Provider = ({ children }) => {
     setComparisonFilter,
     numericalFilter,
     setNumericalFilter,
+    unfilteredData,
   };
 
   return (
