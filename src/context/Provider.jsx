@@ -17,7 +17,7 @@ const Provider = ({ children }) => {
 
   const filterByNumericValues = {
     column: 'population',
-    comparison: 'maior que',
+    comparison: 'greater than',
     value: 0,
   };
 
@@ -29,19 +29,13 @@ const Provider = ({ children }) => {
     'surface_water',
   ]);
 
-  const [comparisons, setComparisons] = useState([
-    'maior que',
-    'menor que',
-    'igual a',
-  ]);
+  const [comparisons, setComparisons] = useState(['greater than', 'less than', 'equal to']);
 
   const [filterList, setFilterList] = useState([]);
 
   const [columnFilter, setColumnFilter] = useState(filterByNumericValues.column);
 
-  const [comparisonFilter, setComparisonFilter] = useState(
-    filterByNumericValues.comparison,
-  );
+  const [comparisonFilter, setComparisonFilter] = useState(filterByNumericValues.comparison);
 
   const [numericalFilter, setNumericalFilter] = useState(0);
 
@@ -95,11 +89,7 @@ const Provider = ({ children }) => {
     setChange,
   };
 
-  return (
-    <DataContext.Provider value={ value }>
-      {children}
-    </DataContext.Provider>
-  );
+  return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
 };
 
 // props validation
