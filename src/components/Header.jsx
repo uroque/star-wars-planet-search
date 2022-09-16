@@ -2,10 +2,21 @@ import React, { useContext, useEffect } from 'react';
 import DataContext from '../context/DataContext';
 
 function Header() {
-  const TABLE_HEADER = ['Name', 'Rotation Period', 'Orbital Period', 'Diameter',
+  const TABLE_HEADER = [
+    'Name',
+    'Rotation Period',
+    'Orbital Period',
+    'Diameter',
     'Climate',
-    'Gravity', 'Terrain', 'Surface Water', 'Population', 'Films', 'Created', 'Edited',
-    'Url'];
+    'Gravity',
+    'Terrain',
+    'Surface Water',
+    'Population',
+    'Films',
+    'Created',
+    'Edited',
+    'Url',
+  ];
 
   // defines the context that will be used
   const {
@@ -47,14 +58,17 @@ function Header() {
       setData(unfilteredData);
     }
     filterList.forEach((filter) => {
-      setData(data.filter((planet) => {
-        if (filter.comparisonFilter === 'maior que') {
-          return Number(planet[filter.columnFilter]) > filter.numericalFilter;
-        } if (filter.comparisonFilter === 'menor que') {
-          return Number(planet[filter.columnFilter]) < filter.numericalFilter;
-        }
-        return Number(planet[filter.columnFilter]) === Number(filter.numericalFilter);
-      }));
+      setData(
+        data.filter((planet) => {
+          if (filter.comparisonFilter === 'greater than') {
+            return Number(planet[filter.columnFilter]) > filter.numericalFilter;
+          }
+          if (filter.comparisonFilter === 'less than') {
+            return Number(planet[filter.columnFilter]) < filter.numericalFilter;
+          }
+          return Number(planet[filter.columnFilter]) === Number(filter.numericalFilter);
+        }),
+      );
     });
   }, [data, filterList, setData, unfilteredData]);
 
@@ -86,14 +100,17 @@ function Header() {
       }
       setData(novoArray);
     } else {
-      setData(data.sort((a, b) => {
-        if (maior(a, b)) {
-          return 1;
-        } if (maior(b, a)) {
-          return 1 - 2;
-        }
-        return 0;
-      }));
+      setData(
+        data.sort((a, b) => {
+          if (maior(a, b)) {
+            return 1;
+          }
+          if (maior(b, a)) {
+            return 1 - 2;
+          }
+          return 0;
+        }),
+      );
     }
     setChange(!change);
   }
@@ -111,105 +128,88 @@ function Header() {
           type="text"
           placeholder="Search by planet name"
           data-testid="name-filter"
-          onChange={ handleTextInputChange }
+          onChange={handleTextInputChange}
         />
         <select
           name="column"
           id="column-filter"
           data-testid="column-filter"
-          onChange={ (e) => setColumnFilter(e.target.value) }
-          value={ columnFilter }
+          onChange={(e) => setColumnFilter(e.target.value)}
+          value={columnFilter}
         >
-          {
-            columns.map((column) => (
-              <option key={ column } value={ column }>{column}</option>
-            ))
-          }
+          {columns.map((column) => (
+            <option key={column} value={column}>
+              {column}
+            </option>
+          ))}
         </select>
         <select
           name="comparison"
           id="comparison-filter"
           data-testid="comparison-filter"
-          onChange={ (e) => setComparisonFilter(e.target.value) }
-          value={ comparisonFilter }
+          onChange={(e) => setComparisonFilter(e.target.value)}
+          value={comparisonFilter}
         >
-          {
-            comparisons.map((comparison) => (
-              <option key={ comparison } value={ comparison }>{comparison}</option>
-            ))
-          }
+          {comparisons.map((comparison) => (
+            <option key={comparison} value={comparison}>
+              {comparison}
+            </option>
+          ))}
         </select>
         <input
           name="value"
           type="number"
           data-testid="value-filter"
-          onChange={ (e) => setNumericalFilter(e.target.value) }
-          value={ numericalFilter }
+          onChange={(e) => setNumericalFilter(e.target.value)}
+          value={numericalFilter}
         />
-        <button
-          type="button"
-          data-testid="button-filter"
-          onClick={ handleButtonSubmit }
-        >
+        <button type="button" data-testid="button-filter" onClick={handleButtonSubmit}>
           Filter
         </button>
       </form>
       <div id="filter-list">
         {filterList.map((filter, index) => (
-          <p key={ index } data-testid="filter">
+          <p key={index} data-testid="filter">
             {`${filter.columnFilter}
               ${filter.comparisonFilter}
               ${filter.numericalFilter}`}
-            <button
-              type="button"
-              onClick={ () => handleDeleteFilter(filter.columnFilter) }
-            >
+            <button type="button" onClick={() => handleDeleteFilter(filter.columnFilter)}>
               X
             </button>
           </p>
         ))}
       </div>
       <div>
-        <select
-          data-testid="column-sort"
-          onChange={ (e) => setColumnSort(e.target.value) }
-        >
+        <select data-testid="column-sort" onChange={(e) => setColumnSort(e.target.value)}>
           {TABLE_HEADER.map((column) => (
-            <option
-              key={ column }
-              value={ column.toLowerCase().replace(' ', '_') }
-            >
+            <option key={column} value={column.toLowerCase().replace(' ', '_')}>
               {column}
             </option>
           ))}
         </select>
         <label htmlFor="ASC">
-          Ascendente
+          Ascending
           <input
             type="radio"
             data-testid="column-sort-input-asc"
             name="sort"
             id="ASC"
             value="ASC"
-            onChange={ (e) => setSort(e.target.value) }
+            onChange={(e) => setSort(e.target.value)}
           />
         </label>
         <label htmlFor="DESC">
-          Descendente
+          Descending
           <input
             type="radio"
             data-testid="column-sort-input-desc"
             name="sort"
             id="DESC"
             value="DESC"
-            onChange={ (e) => setSort(e.target.value) }
+            onChange={(e) => setSort(e.target.value)}
           />
         </label>
-        <button
-          type="button"
-          data-testid="column-sort-button"
-          onClick={ handleSort }
-        >
+        <button type="button" data-testid="column-sort-button" onClick={handleSort}>
           Sort
         </button>
       </div>
